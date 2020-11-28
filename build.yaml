@@ -1,0 +1,25 @@
+targets:
+  $default:
+    builders:
+      code_gen_demo|mark_builder|make_export_builder:
+        enabled: true
+
+builders:
+  mark_builder:
+    # 指定 builder.dart 路径
+    import: 'package:code_gen_demo/builder.dart'
+    # 指定执行 builder 方法
+    builder_factories: ['markBuilder']
+    # 输入 和 输出
+    build_extensions: { '.dart': ['.data.dart'] }
+    # 保证在指定的Builder之前运行
+    runs_before: ['mark_export_builder']
+    auto_apply: root_package
+    build_to: source
+
+  mark_export_builder:
+    import: 'package:code_gen_demo/builder.dart'
+    builder_factories: ["markExportBuilder"]
+    build_extensions: {".dart": [".mark_export.dart"]}
+    auto_apply: root_package
+    build_to: source
